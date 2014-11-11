@@ -1,0 +1,87 @@
+<html>
+	<head>
+		<title>Enabler Example</title>
+		<style>
+			.ad{
+				width: 100%;
+				height: 500px;
+				background-color: green;
+			}
+
+			.clickArea{
+				width: 100%;
+				height: 100px;
+				cursor: pointer;
+				margin-bottom: 15px;
+			}
+
+			#link1{ background-color: red}
+			#link2{ background-color: blue}
+			#link3{ background-color: orange}
+
+			.clickArea p{
+				color: white;
+				font-size: 36px;
+				text-align: center;
+				width: 100%;
+				line-height: 100px;
+				margin: 0;
+				padding: 0;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<div class="ad">
+			<div class="clickArea" id="link1"><p>Link1</p></div>
+			<div class="clickArea" id="link2"><p>Link2</p></div>
+			<div class="clickArea" id="link3"><p>Link3</p></div>
+		</div>
+		
+		<script src="https://s0.2mdn.net/ads/studio/Enabler.js"></script>
+		<script>
+			if(Enabler.isInitialized()){
+				initAd();
+			}
+			else{
+				Enabler.addEventListener(studio.events.StudioEvent.INIT, initAd);
+			}
+
+			function initAd(){
+				console.log("Enabler Ready");
+				var link1 = document.querySelectorAll("#link1")[0];
+				var link2 = document.querySelectorAll("#link2")[0];
+				var link3 = document.querySelectorAll("#link3")[0];
+
+				link1.addEventListener("click", onLinkClick, false);
+				link2.addEventListener("click", onLinkClick, false);
+				link3.addEventListener("click", onLinkClick, false);
+			}
+
+			function onLinkClick(event){
+				event.preventDefault();
+
+				switch(event.currentTarget.id){
+					case "link1":
+
+						// Clicktag, this will let them change the URL in the DoubleClick Dashboard
+
+						Enabler.exit("clickTag", "http://www.google.com");
+						break;
+					case "link2":
+
+						// Tracked Link. They can track other links coming out of the banner that isnt necessarily the clickTag. It will show up in the Dashboard as "legalLink"
+
+						Enabler.exit("legalLink", "http://www.weather.com.com");
+						break;
+					case "link3":
+
+						// Hardcoded Link, They won't be able to change or track this link without having to touch the code.
+
+						window.open("http://www.youtube.com");
+						break;
+				}
+			}
+		</script>
+	</body>
+</html>
